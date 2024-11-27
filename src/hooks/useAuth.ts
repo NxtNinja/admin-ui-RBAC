@@ -15,7 +15,7 @@ export const useLogin = (): UseMutationResult<
     mutationFn: (credentials: Loginschemtype) => login(credentials),
     onSuccess: async () => {
       toast.success("Welcome back...");
-      router.push("/");
+      router.push("/dashboard");
     },
     onError: async (error) => {
       if (error.name === "HTTPError") {
@@ -35,7 +35,7 @@ export const useLogout = () => {
   return useMutation({
     mutationFn: () => logout(),
     onSuccess: async () => {
-      router.push("/auth/login");
+      router.push("/");
     },
     onError: async (error) => {
       if (error.name === "HTTPError") {

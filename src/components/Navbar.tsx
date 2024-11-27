@@ -37,7 +37,7 @@ const Navbar = () => {
           {/* Brand Text */}
           <div
             className="text-2xl font-semibold cursor-pointer"
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/dashboard")}
           >
             ADMIN PANEL
           </div>
