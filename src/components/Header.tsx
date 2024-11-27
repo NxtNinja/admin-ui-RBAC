@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 
 const Header = () => {
   const { pathname } = useRouter();
-  const hideNavbarRoutes = ["/auth/login", "/auth/signup"];
+  const hideNavbarRoutes = ["/"];
 
   const isCurrentPathHideNavbar = hideNavbarRoutes.includes(pathname);
 

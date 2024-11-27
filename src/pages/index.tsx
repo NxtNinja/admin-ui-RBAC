@@ -3,7 +3,9 @@ import { LoginForm } from "@/components/login-form";
 const Index = () => {
   return (
     <>
-      <LoginForm />
+      <div className="flex h-screen w-full items-center justify-center px-4">
+        <LoginForm />
+      </div>
     </>
   );
 };
