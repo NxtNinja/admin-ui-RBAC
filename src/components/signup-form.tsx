@@ -166,7 +166,7 @@ export function SignupForm() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>Role</SelectLabel>
+                    <SelectLabel>Department</SelectLabel>
                     {isFetched &&
                       isSuccess &&
                       departments.map((item) => (
