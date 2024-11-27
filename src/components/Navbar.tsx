@@ -9,7 +9,7 @@ import React from "react";
 const Navbar = () => {
   const [user, setUser] = useAtom(userAtom);
   const router = useRouter();
-  const { data, isSuccess, isFetched, isLoading, isFetching } = useQuery({
+  const { data, isSuccess, isFetched } = useQuery({
     queryKey: ["currentUser"],
     queryFn: async () => {
       const data = await fetcher<User>("user/me");
@@ -25,10 +25,6 @@ const Navbar = () => {
   const cachedData = queryClient.getQueryData<User>(["currentUser"]);
 
   console.log("Cached User Data:", cachedData);
-
-  if (isLoading || isFetching) {
-    return <div className="">Loading....</div>;
-  }
 
   if (isFetched && isSuccess) {
     return (
