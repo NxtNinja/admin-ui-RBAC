@@ -1,126 +1,154 @@
-import React, { useState } from "react";
+import React from "react";
 import clsx from "clsx";
-import { useAtom } from "jotai";
-import { userAtom } from "@/utils/userAtom";
+import { useQuery } from "@tanstack/react-query";
+import { fetcher } from "@/helper/apiHelper";
+import { User, UserArray } from "@/utils/types";
+import EditUserModal from "./EditUserModal";
 
 const EmployeeTable = () => {
-  const [user] = useAtom(userAtom);
+  // Fetch current user data
+  const { data: currentUser } = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: () => fetcher<User>("user/me"),
+  });
 
-  console.log(user);
+  // Fetch employee data based on the current user's role
+  const {
+    data: employeeData,
+    isFetched,
+    isSuccess,
+    isLoading,
+    isFetching,
+  } = useQuery({
+    queryKey: ["employeeAndManager"],
+    queryFn: () => {
+      try {
+        const api =
+          currentUser?.departmentsLink[0].role === "ADMIN"
+            ? "employeeinfo/allEmployee"
+            : "employeeinfo";
+        return fetcher<UserArray>(api);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    enabled: !!currentUser,
+  });
 
-  // State to track the user's role
-  const [role, setRole] = useState("ADMIN"); // Change to 'USER' to see the difference
-  const [employeeIdToEdit, setEmployeeIdToEdit] = useState<number>();
+  // Handle loading and error states
+  if (isLoading || isFetching) {
+    return (
+      <div className="flex items-center gap-3 justify-center h-[90dvh]">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="1em"
+          height="1em"
+          viewBox="0 0 24 24"
+          className="w-16 h-16"
+        >
+          <path
+            fill="currentColor"
+            d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
+            opacity="0.25"
+          />
+          <path
+            fill="currentColor"
+            d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"
+          >
+            <animateTransform
+              attributeName="transform"
+              dur="0.75s"
+              repeatCount="indefinite"
+              type="rotate"
+              values="0 12 12;360 12 12"
+            />
+          </path>
+        </svg>
+        <p className="">Loading Employee Information</p>
+      </div>
+    );
+  }
 
-  // Mock data for employees
-  const employees = [
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john.doe@example.com",
-      title: "Software Engineer",
-      department: "Development",
-      role: "USER",
-      salary: "$80,000",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      title: "Project Manager",
-      department: "Management",
-      role: "ADMIN",
-      salary: "$95,000",
-    },
-    {
-      id: 3,
-      name: "Sam Johnson",
-      email: "sam.johnson@example.com",
-      title: "UX Designer",
-      department: "Design",
-      role: "USER",
-      salary: "$70,000",
-    },
-    {
-      id: 4,
-      name: "Alice Brown",
-      email: "alice.brown@example.com",
-      title: "Data Analyst",
-      department: "Analytics",
-      role: "ADMIN",
-      salary: "$90,000",
-    },
-  ];
+  if (!isSuccess || !employeeData) {
+    return (
+      <div className="grid place-items-center h-[90dvh]">
+        {currentUser?.departmentsLink[0].role} is not allowed to access employee
+        information
+      </div>
+    );
+  }
 
-  return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <th scope="col" className="px-6 py-3">
-              Employee name
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Email
-            </th>
-            <th scope="col" className="px-6 py-3">
-              <div className="flex items-center">Title</div>
-            </th>
-            <th scope="col" className="px-6 py-3">
-              <div className="flex items-center">Department</div>
-            </th>
-            <th scope="col" className="px-6 py-3">
-              <div className="flex items-center">Role</div>
-            </th>
-            <th scope="col" className="px-6 py-3">
-              <div className="flex items-center">Salary</div>
-            </th>
-            {role === "ADMIN" && (
+  console.log(employeeData);
+
+  if (isSuccess && isFetched) {
+    return (
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 min-h-[90dvh]">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
               <th scope="col" className="px-6 py-3">
-                <div className="flex items-center justify-end">Action</div>
+                Employee Name
               </th>
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {employees.map((employee) => (
-            <tr
-              key={employee.id}
-              className={clsx(
-                "bg-white border-b dark:bg-gray-800 dark:border-gray-700",
-                employee.role !== "USER" && "bg-yellow-50"
-              )}
-            >
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
-                {employee.name}
+              <th scope="col" className="px-6 py-3">
+                Email
               </th>
-              <td className="px-6 py-4">{employee.email}</td>
-              <td className="px-6 py-4">{employee.title}</td>
-              <td className="px-6 py-4">{employee.department}</td>
-              <td className="px-6 py-4">{employee.role}</td>
-              <td className="px-6 py-4">{employee.salary}</td>
-              {role === "ADMIN" && (
-                <td
-                  className="px-6 py-4 text-right"
-                  onClick={() => setEmployeeIdToEdit(employee.id)}
-                >
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                  >
-                    Edit
-                  </a>
-                </td>
+              <th scope="col" className="px-6 py-3">
+                Job Title
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Department
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Role
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Salary
+              </th>
+              {currentUser?.departmentsLink[0].role === "ADMIN" && (
+                <th scope="col" className="px-6 py-3">
+                  Action
+                </th>
               )}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+          </thead>
+          <tbody>
+            {employeeData.map((employee) => (
+              <tr
+                key={employee.id}
+                className={clsx(
+                  "bg-white border-b dark:bg-gray-800 dark:border-gray-700",
+                  employee.departmentsLink[0]?.role !== "USER" && "bg-yellow-50"
+                )}
+              >
+                <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                  {employee.fullName}
+                </td>
+                <td className="px-6 py-4">{employee.username}</td>
+                <td className="px-6 py-4">
+                  {employee.departmentsLink[0]?.jobTitle || "N/A"}
+                </td>
+                <td className="px-6 py-4">
+                  {employee.departmentsLink[0]?.department.name || "N/A"}
+                </td>
+                <td className="px-6 py-4">
+                  {employee.departmentsLink[0]?.role || "N/A"}
+                </td>
+                <td className="px-6 py-4">{employee.salary}</td>
+                {currentUser?.departmentsLink[0].role === "ADMIN" && (
+                  <td className="px-6 py-4 cursor-pointer">
+                    <EditUserModal
+                      role={employee.departmentsLink[0].role}
+                      id={employee.id}
+                    />
+                  </td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
 };
 
 export default EmployeeTable;

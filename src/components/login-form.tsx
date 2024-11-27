@@ -33,7 +33,8 @@ export function LoginForm() {
   const loginUser = async (data: Loginschemtype) => {
     try {
       login(data);
-      // queryClient.removeQueries({ queryKey: ["currentUser"] });
+      queryClient.removeQueries({ queryKey: ["currentUser"] });
+      queryClient.removeQueries({ queryKey: ["employeeAndManager"] });
     } catch (error) {
       console.error("Login Error: ", error);
     }

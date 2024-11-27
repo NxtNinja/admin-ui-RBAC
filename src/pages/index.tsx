@@ -3,9 +3,9 @@ import EmployeeTable from "@/components/EmployeeTable";
 const index = () => {
   return (
     <>
-      <div className="min-h-[60dvh] flex justify-center items-center">
-        <EmployeeTable />
-      </div>
+      <EmployeeTable />
+      {/* <div className="min-h-screen flex justify-center items-center">
+      </div> */}
     </>
   );
 };
