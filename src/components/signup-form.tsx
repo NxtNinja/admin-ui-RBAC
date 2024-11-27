@@ -53,18 +53,20 @@ export function SignupForm() {
   console.log(departments);
 
   const registerUser = async (data: Registerschemtype) => {
-    const reqObj = {
-      fullName: data.fullName,
-      username: data.username,
-      password: data.password,
-      contactInfo: data.contactInfo,
-      role: role,
-      departmentId: departmentId,
-    };
-    try {
-      registerNewUser(reqObj);
-    } catch (error) {
-      console.error("Login Error: ", error);
+    if (role && departmentId) {
+      const reqObj = {
+        fullName: data.fullName,
+        username: data.username,
+        password: data.password,
+        contactInfo: data.contactInfo,
+        role: role,
+        departmentId: departmentId,
+      };
+      try {
+        registerNewUser(reqObj);
+      } catch (error) {
+        console.error("Login Error: ", error);
+      }
     }
   };
 
@@ -156,6 +158,7 @@ export function SignupForm() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
+              {!role && <p className="text-red-500">Select a Role</p>}
             </div>
 
             {/* Department Selection Field */}
@@ -177,6 +180,9 @@ export function SignupForm() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
+              {!departmentId && (
+                <p className="text-red-500">Select a Department</p>
+              )}
             </div>
 
             {/* Submit Button */}
