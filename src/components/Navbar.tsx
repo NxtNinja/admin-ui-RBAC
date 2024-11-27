@@ -18,6 +18,8 @@ const Navbar = () => {
     },
   });
 
+  console.log(user);
+
   const queryClient = useQueryClient();
 
   const cachedData = queryClient.getQueryData<User>(["currentUser"]);

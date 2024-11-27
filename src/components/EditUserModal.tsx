@@ -3,11 +3,13 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { poster } from "@/helper/apiHelper";
+import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -17,9 +19,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { useState } from "react";
-import { poster } from "@/helper/apiHelper";
-import { useQueryClient } from "@tanstack/react-query";
 
 const EditUserModal = ({ role, id }: { role: string; id: string }) => {
   const queryClient = useQueryClient();

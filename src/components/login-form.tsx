@@ -15,20 +15,20 @@ import { loginSchema, Loginschemtype } from "@/utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLogin } from "@/hooks/useAuth";
+import { Loader2 } from "lucide-react";
 
 export function LoginForm() {
   const {
     register,
     handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<Loginschemtype>({
     resolver: zodResolver(loginSchema),
   });
 
   const queryClient = useQueryClient();
 
-  const { mutate: login, isError, isPending, isSuccess } = useLogin();
+  const { mutate: login, isPending } = useLogin();
 
   const loginUser = async (data: Loginschemtype) => {
     try {
@@ -77,9 +77,16 @@ export function LoginForm() {
                 <p className="text-red-500">{errors.password.message}</p>
               )}
             </div>
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
+            {isPending ? (
+              <Button disabled>
+                <Loader2 className="animate-spin w-full" />
+                Please wait
+              </Button>
+            ) : (
+              <Button type="submit" className="w-full">
+                Login
+              </Button>
+            )}
           </div>
         </form>
         <div className="mt-4 text-center text-sm">

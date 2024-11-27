@@ -1,9 +1,9 @@
 import { userAtom } from "@/utils/userAtom";
 import { useAtom } from "jotai";
 import { Button } from "./ui/button";
-import { poster } from "@/helper/apiHelper";
 import { useLogout } from "@/hooks/useAuth";
 import { useQueryClient } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 
 const Profile = () => {
   const [userData] = useAtom(userAtom);
@@ -24,9 +24,16 @@ const Profile = () => {
           <h1 className="font-semibold text-2xl mb-6 underline text-gray-800 dark:text-gray-100">
             Profile Information
           </h1>
-          <Button onClick={logoutUser} variant={"destructive"}>
-            Logout
-          </Button>
+          {isPending ? (
+            <Button disabled>
+              <Loader2 className="animate-spin" />
+              Please wait
+            </Button>
+          ) : (
+            <Button onClick={logoutUser} variant={"destructive"}>
+              Logout
+            </Button>
+          )}
         </div>
         <div className="space-y-6">
           {/* Email Section */}

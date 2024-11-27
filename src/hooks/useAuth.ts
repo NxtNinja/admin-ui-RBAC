@@ -1,6 +1,6 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { login, logout } from "../helper/authHelper";
-import { Loginschemtype, Registerschemtype } from "@/utils/zodSchema";
+import { Loginschemtype } from "@/utils/zodSchema";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
 import { HTTPError } from "ky";
