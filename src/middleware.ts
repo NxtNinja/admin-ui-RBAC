@@ -12,7 +12,7 @@ export function middleware(request: NextRequest) {
       const customNextResponse = NextResponse.redirect(
         new URL("/", request.nextUrl)
       );
-      customNextResponse.cookies.delete("session"); // Delete session cookie
+      //   customNextResponse.cookies.delete("session"); // Delete session cookie
       return customNextResponse; // Return the response with the deleted cookie
     } catch (error) {
       console.log(error);
