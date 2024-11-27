@@ -51,3 +51,5 @@ You can log in to the application using the following test credentials:
 - **Styling**: Tailwind CSS
 - **State Management**: Tanstack Query
 - **API Communication**: Ky
+
+Backend Repository Link --> [https://github.com/NxtNinja/nestjs-RBAC](https://github.com/NxtNinja/nestjs-RBAC)
