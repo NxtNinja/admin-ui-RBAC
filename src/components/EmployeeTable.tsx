@@ -78,6 +78,14 @@ const EmployeeTable = () => {
     );
   }
 
+  if (!currentUser) {
+    return (
+      <div className="grid place-items-center h-[90dvh]">
+        Please login first to get access
+      </div>
+    );
+  }
+
   console.log(employeeData);
 
   if (isSuccess && isFetched) {
