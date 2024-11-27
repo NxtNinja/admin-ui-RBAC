@@ -1,40 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Frontend Repository with RBAC Features
 
-## Getting Started
+This repository contains the frontend implementation of a project built using **Next.js**. The frontend is designed to provide a seamless user experience for the Role-Based Access Control (RBAC) system integrated with the backend. It dynamically renders interfaces and functionalities based on user roles. The application is hosted on the **DigitalOcean App Platform** for reliable and scalable performance.
 
-First, run the development server:
+Project Link --> [https://rbac-nextjs-ry8w2.ondigitalocean.app](https://rbac-nextjs-ry8w2.ondigitalocean.app/)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Key Features
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+- **RBAC Features**:
+  - **Admin**:
+    - Access to a dashboard for viewing and managing all users.
+    - Can update user roles (e.g., switch Manager to User and vice versa).
+  - **Manager**:
+    - Restricted to viewing users only within the department they manage.
+  - **User**:
+    - Can access and view only their own profile details.
+- **Responsive Design**:
+  - Built with a mobile-first approach for optimal performance across all devices.
+- **UI Components**:
+  - Designed using reusable components for enhanced scalability and maintainability.
+- **API Integration**:
+  - Fully integrated with the backend API for dynamic data rendering.
+- **Secure Hosting**:
+  - Deployed on **DigitalOcean App Platform** for consistent and secure access.
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+---
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+## Test Users
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+You can log in to the application using the following test credentials:
 
-## Learn More
+- **Admin**:  
+  Email: `terry.colby@e-corp.com`  
+  Password: `newpass`
 
-To learn more about Next.js, take a look at the following resources:
+- **Manager**:  
+  Email: `tyrell.wellick@e-corp.com`  
+  Password: `pwned`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+- **User**:  
+  Email: `Bailee_Williamson82@e-corp.com`  
+  Password: `pwned`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+- **Frontend Framework**: Next.js
+- **Styling**: Tailwind CSS
+- **State Management**: Tanstack Query
+- **API Communication**: Ky
