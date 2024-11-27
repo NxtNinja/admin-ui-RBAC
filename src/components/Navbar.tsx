@@ -1,0 +1,41 @@
+import { fetcher } from "@/helper/apiHelper";
+import { User } from "@/utils/types";
+import { userAtom } from "@/utils/userAtom";
+import { useQuery } from "@tanstack/react-query";
+import { useAtom } from "jotai";
+import React from "react";
+
+const Navbar = () => {
+  const [user, setUser] = useAtom(userAtom);
+  const { data, isSuccess, isFetched } = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: async () => {
+      const data = await fetcher<User>("user/me");
+      setUser(data);
+      return data;
+    },
+  });
+
+  if (isFetched && isSuccess) {
+    return (
+      <nav className="p-4">
+        <div className="container mx-auto flex justify-between items-center">
+          {/* Brand Text */}
+          <div className="text-2xl font-semibold">ADMIN PANEL</div>
+
+          {/* Avatar */}
+          <div className="flex items-center gap-2">
+            <img
+              src="https://cdn-icons-png.flaticon.com/128/64/64572.png"
+              alt="User Avatar"
+              className="w-10 h-10 rounded-full"
+            />
+            <p className="">{data.fullName}</p>
+          </div>
+        </div>
+      </nav>
+    );
+  }
+};
+
+export default Navbar;
